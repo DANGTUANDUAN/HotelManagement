@@ -17,9 +17,18 @@ namespace HotelManage.Forms
             InitializeComponent();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void btnManageEmp_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            EmployeeForm employeeForm = new EmployeeForm();
+            employeeForm.Show();
+        }
 
+        private void btnLogOut_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            LoginForm loginForm = new LoginForm();
+            loginForm.Show();
         }
     }
 }

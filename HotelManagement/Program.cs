@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using DTO;
 using DTO.Entities;
+using HotelManage.Forms;
 
 namespace HotelManagement
 {
@@ -48,6 +49,8 @@ namespace HotelManagement
             /*Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());*/
+            Application.Run(new LoginForm());
+            //Application.Run(new EmployeeForm());
             try
             {
                 DropDatabase();

@@ -13,7 +13,7 @@ namespace DTO
 {
     public class Context : DbContext
     {
-        public Context() : base("name=hoteldata")
+        public Context() : base("name=hoteldata1")
         {
             this.Configuration.LazyLoadingEnabled = true;
             this.Configuration.ProxyCreationEnabled = true;
