@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using HotelManage.Resources.Utils;
 using BUS.Controllers;
 using DTO.Entities;
 using DTO;
@@ -28,12 +29,12 @@ namespace HotelManage.Forms
         private DataTable GetDataTable(List<Employee> employees, List<Account> accounts)
         {
             DataTable table = new DataTable();
-            table.Columns.Add("Mã NV", typeof(string));
-            table.Columns.Add("Họ Tên", typeof(string));
-            table.Columns.Add("Địa Chỉ", typeof(string));
+            table.Columns.Add("EmpID", typeof(string));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("Address", typeof(string));
             table.Columns.Add("SDT", typeof(string));
-            table.Columns.Add("User Name", typeof(string));
-            table.Columns.Add("Mật Khẩu", typeof(string));
+            table.Columns.Add("UserName", typeof(string));
+            table.Columns.Add("PassWord", typeof(string));
 
 
             foreach (var employee in employees)
@@ -58,7 +59,12 @@ namespace HotelManage.Forms
             // Return databale 
             var dt = this.GetDataTable(employee,account);
             this.dataGridEmployee.DataSource = dt;
-
+            this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["EmpID"], ListSortDirection.Ascending);
+            this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["Name"], ListSortDirection.Ascending);
+            this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["Address"], ListSortDirection.Ascending);
+            this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["SDT"], ListSortDirection.Ascending);
+            this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["UserName"], ListSortDirection.Ascending);
+            this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["PassWord"], ListSortDirection.Ascending);
         }
 
         private void ClearAllTextBox()
@@ -200,6 +206,73 @@ namespace HotelManage.Forms
             {
                 MessageBox.Show("Update Employee failure!!!");
             }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string NameSearch = txtSearch.Text;
+
+                string error = "";
+                var employees = emp.GetAllEmployeeByName(NameSearch, ref error);
+
+                if (employees.Count() > 0)
+                {
+                    var accounts = ac.GetAllAccount(ref error);
+                    DataTable table = new DataTable();
+                    table.Columns.Add("EmpID", typeof(string));
+                    table.Columns.Add("Name", typeof(string));
+                    table.Columns.Add("Address", typeof(string));
+                    table.Columns.Add("SDT", typeof(string));
+                    table.Columns.Add("UserName", typeof(string));
+                    table.Columns.Add("PassWord", typeof(string));
+
+
+                    foreach (var employee in employees)
+                    {
+                        foreach (var account in accounts)
+                        {
+                            if (employee.Id == account.EmployeeId)
+                            {
+                                table.Rows.Add(employee.Id, employee.Name, employee.Address, employee.Phonenumber, account.Username, account.Password);
+                            }
+                        }
+                    }
+
+                    this.dataGridEmployee.DataSource = table;
+                    this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["EmpID"], ListSortDirection.Ascending);
+                    this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["Name"], ListSortDirection.Ascending);
+                    this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["Address"], ListSortDirection.Ascending);
+                    this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["SDT"], ListSortDirection.Ascending);
+                    this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["UserName"], ListSortDirection.Ascending);
+                    this.dataGridEmployee.Sort(this.dataGridEmployee.Columns["PassWord"], ListSortDirection.Ascending);
+                    // Return databale
+                }
+                else
+                {
+                    MessageBox.Show("Employee không tồn tại");
+                }
+                txtSearch.ResetText();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            ClearAllTextBox();
+            FillDataGrid();
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            HomeForm homeForm = new HomeForm();
+            homeForm.Show();
+            this.Close();
         }
     }
 }

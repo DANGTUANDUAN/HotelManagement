@@ -38,6 +38,29 @@ namespace BUS.Controllers
             }
         }
 
+        public Account GetAccountId(string Id, ref string error)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    var account = context.Accounts.Where(acc=> acc.EmployeeId == Id).FirstOrDefault();
+                    if (account != null)
+                    {
+                        error = "Get Employee By Id Success!!!";
+                        return account;
+                    }
+                    error = "Employee Is Not Exsit!!!";
+                    return account;
+                }
+            }
+            catch
+            {
+                error = "Get Employee By Id Failure!!!";
+                return null;
+            }
+        }
+
         public bool GetLogin(string Username, string Password, ref string error)
         {
             using (var context = new Context())

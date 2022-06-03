@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using DTO;
 using DTO.Entities;
+using System.Data.Entity;
 namespace BUS.Controllers
 {
     public class EmployeeController
@@ -45,6 +46,30 @@ namespace BUS.Controllers
                     error = ex.Message;
                     return null;
                 }
+            }
+        }
+
+        public List<Employee> GetAllEmployeeByName(string Name, ref string error)
+        {
+            try
+            {
+                using (var context = new Context())
+                {
+                    var employee = context.Employees.Where(ee => ee.Name == Name).ToList();
+
+                    if (employee.Count() > 0)
+                    {
+                        error = "Get Employee By Name Success!!!";
+                        return employee;
+                    }
+                    error = "Employee Is Not Exsit!!!";
+                    return null;
+                }
+            }
+            catch
+            {
+                error = "Get Employee By Name Failure!!!";
+                return null;
             }
         }
 

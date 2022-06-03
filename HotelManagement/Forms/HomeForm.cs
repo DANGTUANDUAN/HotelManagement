@@ -22,6 +22,7 @@ namespace HotelManage.Forms
             this.Hide();
             EmployeeForm employeeForm = new EmployeeForm();
             employeeForm.Show();
+            this.Close();
         }
 
         private void btnLogOut_Click(object sender, EventArgs e)
@@ -29,6 +30,7 @@ namespace HotelManage.Forms
             this.Hide();
             LoginForm loginForm = new LoginForm();
             loginForm.Show();
+            this.Close();
         }
     }
 }
